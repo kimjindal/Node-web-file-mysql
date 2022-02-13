@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie": "^0.4.2",
     "mysql": "^2.18.1",
+    "path-parse": "^1.0.7",
     "sanitize-html": "^2.7.0"
   }
 }
