@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>WEB1 - Ajax</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1><a href="fetch.html">AJAX</a></h1>
+    <ol>
+      <li><a href="#!/data/HTML" onclick="fetchPage('./data/HTML')">HTML</a></li>
+      <li><a href="#!/data/CSS" onclick="fetchPage('./data/CSS')">CSS</a></li>
+      <li><a href="#!/data/JAVACRIPT" onclick="fetchPage('./data/Javascript')">JAVASCRIPT</a></li>
+    </ol>
+    <article></article>
+    <script>
+      function fetchPage(name) {
+        fetch(name).then(function (response) {
+          console.log(response);
+          response.text().then(function (text) {
+            document.querySelector('article').innerHTML = text;
+          });
+        });
+      }
+
+      if (location.hash) {
+        fetchPage(location.hash.substr(2));
+      } else {
+        fetchPage('./data/Welcome');
+      }
+    </script>
+  </body>
+</html>

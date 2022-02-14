@@ -44,7 +44,7 @@ var app = http.createServer(function (req, res) {
     loginStatus = auth.loginStatus;
   }
 
-  const parsePath = pathParse(title).base; // very very important!!
+  const parsePath = pathParse(title).base; // VERY important!!
 
   fs.readFile(`data/${parsePath}`, 'utf8', (err, content) => {
     if (!err) {
