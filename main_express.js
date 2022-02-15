@@ -1,26 +1,20 @@
 const fs = require('fs');
-const express = require('express');
-const req = require('express/lib/request');
 const bodyParser = require('body-parser');
 const compression = require('compression');
-const template = require('./lib/expressModule');
+const topic = require('./routes/topic'); // my router module
+const index = require('./routes/index'); // my router module
 
+const express = require('express');
 const app = express();
 
-var list = '';
-var title = '';
-var content = '';
-var control = '';
-var loginStatus = '';
-
 // Express Middleware :VERY important
-// Serving static files in Express
+// Static files serving middleware
 app.use(express.static('public'));
-// Between Webclient and Server of Form data parseing by express middleware
+// Between client and server of Body(form data) parseing middleware
 app.use(bodyParser.urlencoded({ extended: false }));
-// Use compression express middleware
+// Use compression middleware
 app.use(compression());
-// Create file list to <ul> tag by writted to my express middleware
+// Create file list to <ul> tag of mine middleware
 app.get('*', function (req, res, next) {
   fs.readdir('./data', function (err, filelist) {
     if (err) next(err);
@@ -29,91 +23,9 @@ app.get('*', function (req, res, next) {
   });
 });
 
-app.get('/', (req, res) => {
-  title = 'Welcome';
-  list = template.list(req.list);
-  control = template.controlForm('');
-  content = '<p><div>Hello~ Node.js with Express!!!</p></div>';
-  var HTML = template.html(
-    title,
-    list,
-    `<h2>${title}</h2><div>${content}</div><div><img src="./images/unsplash_html.jpg"></div>`,
-    control,
-    loginStatus
-  );
-
-  res.send(HTML);
-});
-
-app.get('/page/:pageId', (req, res, next) => {
-  fs.readFile(`data/${req.params.pageId}`, 'utf8', (err, content) => {
-    if (err) next(err);
-    // if (err) content = `Sorry can't this page!`;
-    title = req.params.pageId;
-    list = template.list(req.list);
-    control = template.controlForm(title);
-
-    var HTML = template.html(
-      title,
-      list,
-      `<h2>${title}</h2><div>${content}</div>`,
-      control,
-      loginStatus
-    );
-
-    res.send(HTML);
-  });
-});
-
-app.get('/create', (req, res) => {
-  title = 'Create a article';
-  list = template.list(req.list);
-  content = `
-    <form action="/createProcess" method="post">
-      <p><input type="text" name="title" placeholder="title" /></p>
-      <p><textarea name="description" placeholder="description..."></textarea></p>
-      <p><input type="submit" /></p>
-    </form>
-    `;
-  var HTML = template.html(title, list, `<h2>${title}</h2><div>${content}</div>`, '', loginStatus);
-
-  res.send(HTML);
-});
-
-app.post('/createProcess', (req, res) => {
-  template.createProcess(req, res);
-});
-
-app.get('/update/:pageId', (req, res) => {
-  fs.readFile(`data/${req.params.pageId}`, 'utf8', (err, content) => {
-    title = req.params.pageId;
-    list = template.list(req.list);
-    var HTML = template.html(
-      title,
-      list,
-      `<h2>Update</h2>
-      <form action="/updateProcess" method="post">
-        <p><input type="hidden" name="id" value="${title}"/></p>
-        <p><input type="text" name="title" placeholder="title" value="${title}"/></p>
-        <p><textarea name="description" placeholder="description...">${content}</textarea></p>
-        <p><input type="submit" /></p>
-      </form>
-      `,
-      '',
-      loginStatus
-    );
-
-    res.send(HTML);
-  });
-});
-
-app.post('/updateProcess', (req, res) => {
-  template.createProcess(req, res);
-});
-
-app.post('/deleteProcess', (req, res) => {
-  template.deleteProcess(req, res);
-});
+// Express Router
+app.use('/', index);
+app.use('/topic', topic);
 
 // Error handlers
 app.use(function (req, res, next) {
@@ -121,7 +33,7 @@ app.use(function (req, res, next) {
 });
 app.use(function (err, req, res, next) {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).send('Something broken!');
 });
 
 app.listen(3000);
