@@ -1,10 +1,6 @@
 const http = require('http');
 const fs = require('fs');
 const pathParse = require('path-parse');
-// const qs = require('querystring');
-// const url = require('url');
-// The querystring API has been deprecated.
-// New code should use the URLSearchParams API instead.
 const template = require('./lib/webModule');
 
 var app = http.createServer(function (req, res) {
