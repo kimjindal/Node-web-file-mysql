@@ -1,4 +1,4 @@
-<p><b>NPM</b>은 "Node Package Manager" 혹은 "Node Package Module"의 줄임말로써 Python의 pip나 Ruby의 gem처럼 Node.js의 패키지를 관리할 수 있는 도구이다. 또한 npm을 사용하여 패키지를 공유하는 온라인 패키지 저장소의 이름이기도 하다.</p>
+<p><b>npm</b>은 "Node Package Manager" 혹은 "Node Package Module"의 줄임말로써 Python의 pip나 Ruby의 gem처럼 Node.js의 패키지를 관리할 수 있는 도구이다. 또한 npm을 사용하여 패키지를 공유하는 온라인 패키지 저장소의 이름이기도 하다.</p>
 
 <p>npm은 Node.js의 급격한 인기몰이에 힘입어 빠르게 성장하여 세계 최대의 패키지 저장소가 되었다. 2020년 9월 기준으로 140만 개의 패키지가 등록되었다.</p>
 

@@ -13,7 +13,7 @@ var loginStatus = {};
 router.get('/create', (req, res) => {
   title = 'Create a article';
   list = template.list(req.list);
-  loginStatus = template.loginStatus(req);
+  loginStatus = template.loginStatus(req.user);
 
   content = `
     <form action="/topic/createProcess" method="post">
@@ -40,9 +40,10 @@ router.get('/:pageId', (req, res, next) => {
       next(err);
       return false;
     }
+
     title = req.params.pageId;
     list = template.list(req.list);
-    loginStatus = template.loginStatus(req);
+    loginStatus = template.loginStatus(req.user);
 
     if (loginStatus.on) {
       control = template.controlForm(title);
@@ -70,7 +71,7 @@ router.get('/update/:pageId', (req, res) => {
     }
     title = req.params.pageId;
     list = template.list(req.list);
-    loginStatus = template.loginStatus(req);
+    loginStatus = template.loginStatus(req.user);
 
     if (loginStatus.on) {
       control = template.controlForm(title);
@@ -98,7 +99,7 @@ router.get('/update/:pageId', (req, res) => {
 });
 
 router.post('/createProcess', (req, res) => {
-  loginStatus = template.loginStatus(req);
+  loginStatus = template.loginStatus(req.user);
   if (!loginStatus.on) {
     res.send("Sorry! You can't create a article.");
     return false;
@@ -107,7 +108,7 @@ router.post('/createProcess', (req, res) => {
 });
 
 router.post('/updateProcess', (req, res) => {
-  loginStatus = template.loginStatus(req);
+  loginStatus = template.loginStatus(req.user);
   if (!loginStatus.on) {
     res.send("Sorry! You can't update a article.");
     return false;
@@ -116,7 +117,7 @@ router.post('/updateProcess', (req, res) => {
 });
 
 router.post('/deleteProcess', (req, res) => {
-  loginStatus = template.loginStatus(req);
+  loginStatus = template.loginStatus(req.user);
   if (!loginStatus.on) {
     res.send("Sorry! You can't delete a article.");
     return false;

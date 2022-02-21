@@ -1,5 +1,7 @@
 .DS_Store
-*_temp.js
+*_tmp.js
+*_tmp.json
 *-lock.json
 node_modules/
 sessions/
+config/*.json

@@ -1,6 +1,4 @@
 const express = require('express');
-const app = express();
-
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const compression = require('compression');
@@ -8,6 +6,7 @@ const helmet = require('helmet');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 
+const app = express();
 // Express Middleware: VERY important
 // Security Http Header middleware
 app.use(helmet());
@@ -26,6 +25,29 @@ app.use(
     store: new FileStore({ logFn: function () {} }),
   })
 );
+
+// Authentication middleware Passport
+const passport = require('./lib/passport')(app);
+const string = encodeURIComponent('Please check your email and password');
+app.post(
+  '/auth/loginProcess',
+  passport.authenticate('local', {
+    // successRedirect:'/',
+    failureRedirect: '/auth/login?flash=' + string,
+  }),
+  function (req, res) {
+    req.session.save(function (err) {
+      console.log('session save & successRedirect');
+      res.redirect('/');
+    });
+  }
+);
+
+// Express Router: VERY Important
+const index = require('./routes/index'); // my router module
+const topic = require('./routes/topic'); // my router module
+const auth = require('./routes/auth'); // my router module
+
 // Create file list to <ul> tag of mine middleware
 app.get('*', function (req, res, next) {
   fs.readdir('./data', function (err, filelist) {
@@ -34,11 +56,6 @@ app.get('*', function (req, res, next) {
     next();
   });
 });
-
-// Express Router: VERY Important
-const index = require('./routes/index'); // my router module
-const topic = require('./routes/topic'); // my router module
-const auth = require('./routes/auth'); // my router module
 
 app.use('/', index);
 app.use('/topic', topic);

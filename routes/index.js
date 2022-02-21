@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
   title = 'Welcome';
   list = template.list(req.list);
   content = '<p><div>Hello~ Node.js with Express!!!</p></div>';
-  loginStatus = template.loginStatus(req);
+  loginStatus = template.loginStatus(req.user);
 
   if (loginStatus.on) {
     control = `
